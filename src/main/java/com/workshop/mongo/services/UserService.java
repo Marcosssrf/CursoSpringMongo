@@ -1,10 +1,10 @@
 package com.workshop.mongo.services;
 
 import com.workshop.mongo.domain.User;
+import com.workshop.mongo.dto.UserDTO;
 import com.workshop.mongo.repository.UserRepository;
 import com.workshop.mongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +23,32 @@ public class UserService {
 	public User findById(String id) {
 		Optional<User> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(id));
+	}
+
+	public User insert(User obj){
+		return repo.insert(obj);
+	}
+
+
+
+	public void delete(String id) {
+		findById(id);
+		repo.deleteById(id);
+	}
+
+	public User update(User obj) {
+		User newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+
+	public User fromDTO(UserDTO objDto){
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+	}
+
+	private void updateData(User newObj, User obj) {
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
 	}
 
 }
