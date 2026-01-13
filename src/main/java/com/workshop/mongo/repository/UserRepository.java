@@ -5,8 +5,4 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String> {
-
-	String Id(String id);
-
-	Example<User> id(String id);
 }
